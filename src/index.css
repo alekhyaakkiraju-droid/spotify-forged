@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background-baseline: 18 18 18;
+  --background-highlight: 68 68 68;
+  --text-baseline: 255 255 255;
+  --text-primary: 29 185 84;
+}
+
+@layer base {
+  body {
+    @apply min-h-screen bg-black text-white/70 antialiased;
+    min-width: 600px;
+    font-size: 16px;
+    letter-spacing: 0.015em;
+  }
+
+  a,
+  button:focus-visible {
+    @apply outline outline-2 outline-white outline-offset-2;
+  }
+}
+
+@layer components {
+  .content-spacing {
+    @apply px-8 pt-4;
+  }
+
+  .text-heading {
+    @apply text-2xl text-white;
+  }
+
+  .common-grid {
+    @apply grid gap-6;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  }
+}
