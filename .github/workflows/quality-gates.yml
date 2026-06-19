@@ -1,0 +1,38 @@
+name: Quality Gates
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Test
+        run: npm run test
+        env:
+          VITE_SPOTIFY_CLIENT_ID: test-client-id
+          VITE_SPOTIFY_REDIRECT_URI: http://127.0.0.1:5173/callback
+          VITE_SPOTIFY_SCOPES: user-read-private streaming
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_SPOTIFY_CLIENT_ID: test-client-id
+          VITE_SPOTIFY_REDIRECT_URI: http://127.0.0.1:5173/callback
+          VITE_SPOTIFY_SCOPES: user-read-private streaming
