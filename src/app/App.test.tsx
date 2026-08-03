@@ -7,7 +7,7 @@ describe("App", () => {
     render(<App />);
     expect(await screen.findByText("SpotifyForged")).toBeInTheDocument();
     expect(
-      await screen.findByRole("heading", { name: /Welcome to SpotifyForged/i }),
+      await screen.findByRole("heading", { name: /Millions of songs/i }),
     ).toBeInTheDocument();
   });
 });

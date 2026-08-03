@@ -4,17 +4,19 @@ import { search } from "@/shared/api/spotifyApi";
 import { useAuth } from "@/features/auth/useAuth";
 import { MediaCard } from "@/shared/ui/MediaCard";
 import { useAppStore } from "@/shared/stores/appStore";
+import { useDebouncedValue } from "@/shared/utils/useDebouncedValue";
 
 export function SearchPage() {
   const { accessToken, isAuthenticated, login } = useAuth();
   const [query, setQuery] = useState("");
+  const debouncedQuery = useDebouncedValue(query, 300);
   const setSearchQuery = useAppStore((s) => s.setQuery);
 
   const searchQuery = useQuery({
-    queryKey: ["search", query],
+    queryKey: ["search", debouncedQuery],
     queryFn: () =>
-      search(accessToken!, query, ["track", "album", "artist", "playlist"]),
-    enabled: !!accessToken && query.trim().length > 0,
+      search(accessToken!, debouncedQuery, ["track", "album", "artist", "playlist"]),
+    enabled: !!accessToken && debouncedQuery.trim().length > 0,
   });
 
   if (!isAuthenticated) {
@@ -50,7 +52,7 @@ export function SearchPage() {
 
       {query.trim().length === 0 ? (
         <p className="mt-8 text-white/50">Start typing to search.</p>
-      ) : searchQuery.isLoading ? (
+      ) : debouncedQuery.trim().length === 0 || searchQuery.isLoading ? (
         <p className="mt-8 text-white/50">Searching...</p>
       ) : (
         <div className="mt-8 space-y-10">

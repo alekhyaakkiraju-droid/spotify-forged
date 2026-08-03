@@ -48,8 +48,10 @@ export async function getCurrentlyPlaying(
 export async function startPlayback(
   accessToken: Token,
   body?: { uris?: string[]; context_uri?: string; offset?: { position: number } },
+  deviceId?: string,
 ): Promise<void> {
-  await spotifyFetch<void>("/me/player/play", {
+  const deviceQuery = deviceId ? `?device_id=${encodeURIComponent(deviceId)}` : "";
+  await spotifyFetch<void>(`/me/player/play${deviceQuery}`, {
     accessToken,
     method: "PUT",
     body: body ? JSON.stringify(body) : undefined,

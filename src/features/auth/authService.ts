@@ -67,10 +67,16 @@ export async function exchangeCodeForTokens(
   });
 
   if (!response.ok) {
-    throw new Error(`Token exchange failed: ${response.status}`);
+    const body = await response.text();
+    throw new Error(body.trim() || `Token exchange failed: ${response.status}`);
   }
 
-  return (await response.json()) as SpotifyTokenResponse;
+  const tokenResponse = (await response.json()) as SpotifyTokenResponse;
+  if (!tokenResponse.refresh_token) {
+    throw new Error("Spotify did not return a refresh token. Try signing in again.");
+  }
+
+  return tokenResponse;
 }
 
 export async function refreshAccessToken(

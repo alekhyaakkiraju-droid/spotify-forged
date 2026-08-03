@@ -4,36 +4,80 @@
 
 :root {
   --background-baseline: 18 18 18;
-  --background-highlight: 68 68 68;
+  --background-elevated: 24 24 24;
+  --background-highlight: 40 40 40;
+  --background-card: 32 32 32;
   --text-baseline: 255 255 255;
   --text-primary: 29 185 84;
+  --gradient-hero: linear-gradient(
+    135deg,
+    rgb(29 185 84 / 0.35) 0%,
+    rgb(30 215 96 / 0.08) 35%,
+    rgb(18 18 18) 70%
+  );
 }
 
 @layer base {
   body {
-    @apply min-h-screen bg-black text-white/70 antialiased;
+    @apply min-h-screen bg-black font-sans text-white/70 antialiased;
     min-width: 600px;
     font-size: 16px;
-    letter-spacing: 0.015em;
+    letter-spacing: -0.01em;
   }
 
   a,
   button:focus-visible {
-    @apply outline outline-2 outline-white outline-offset-2;
+    @apply outline outline-2 outline-spotify-green outline-offset-2;
   }
 }
 
 @layer components {
+  .app-shell {
+    @apply min-h-screen bg-gradient-to-b from-[#1a1a1a] via-black to-black;
+  }
+
+  .main-panel {
+    @apply min-h-[calc(100vh-theme(spacing.topBar)-theme(spacing.nowPlayingBar))] rounded-tl-xl bg-gradient-to-b from-white/[0.04] to-transparent;
+  }
+
   .content-spacing {
-    @apply px-8 pt-4;
+    @apply px-6 pb-10 pt-6 md:px-10;
   }
 
   .text-heading {
-    @apply text-2xl text-white;
+    @apply text-3xl font-bold tracking-tight text-white md:text-4xl;
+  }
+
+  .section-title {
+    @apply text-2xl font-bold tracking-tight text-white;
   }
 
   .common-grid {
     @apply grid gap-6;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  }
+
+  .glass-bar {
+    @apply border-white/10 bg-black/70 backdrop-blur-xl;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-full bg-spotify-green px-8 py-3 text-base font-bold text-black transition hover:scale-105 hover:bg-[#1ed760] active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-full border border-white/20 bg-white/5 px-6 py-2.5 text-sm font-semibold text-white transition hover:border-white/40 hover:bg-white/10;
+  }
+
+  .nav-pill {
+    @apply flex items-center gap-4 rounded-md px-3 py-2.5 text-sm font-semibold text-white/70 transition hover:bg-white/10 hover:text-white;
+  }
+
+  .nav-pill-active {
+    @apply bg-white/10 text-white;
+  }
+
+  .search-pill {
+    @apply flex h-12 w-full max-w-md items-center gap-3 rounded-full border border-transparent bg-white/10 px-4 text-sm text-white/50 transition hover:border-white/10 hover:bg-white/[0.14];
   }
 }

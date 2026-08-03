@@ -90,14 +90,17 @@ export function useAuth() {
   }, []);
 
   const handleCallback = useCallback(
-    async (code: string) => {
+    async (code: string): Promise<boolean> => {
       const verifier = TokenVaultService.loadCodeVerifier();
       if (!verifier) {
-        setError("Missing PKCE verifier");
-        return;
+        setError(
+          "Missing PKCE verifier. Open http://127.0.0.1:5173 (not localhost) and try again.",
+        );
+        return false;
       }
 
       setLoading(true);
+      setError(null);
       try {
         const tokenResponse = await exchangeCodeForTokens(code, verifier);
         persistTokens(tokenResponse);
@@ -109,8 +112,10 @@ export function useAuth() {
         if (stored) {
           scheduleRefresh(stored.expiresAt, stored.refreshToken);
         }
+        return true;
       } catch (err) {
         setError(err instanceof Error ? err.message : "Authentication failed");
+        return false;
       } finally {
         setLoading(false);
       }

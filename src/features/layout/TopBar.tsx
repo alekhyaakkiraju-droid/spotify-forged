@@ -1,36 +1,51 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "@/features/auth/useAuth";
+import { NavIcon } from "@/shared/ui/NavIcon";
 
 export function TopBar() {
   const { user, isAuthenticated, login, logout } = useAuth();
 
   return (
-    <header className="sticky top-0 z-30 flex h-topBar items-center justify-between border-b border-white/10 bg-spotify-black/80 px-6 backdrop-blur">
-      <div className="flex items-center gap-2">
+    <header className="glass-bar sticky top-0 z-30 flex h-topBar items-center justify-between gap-4 px-6">
+      <div className="flex min-w-0 flex-1 items-center gap-3">
         <button
           type="button"
           aria-label="Go back"
-          className="rounded-full bg-black/40 p-2 text-white/70 hover:text-white"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/50 text-white/60 transition hover:bg-black hover:text-white"
         >
           ←
         </button>
         <button
           type="button"
           aria-label="Go forward"
-          className="rounded-full bg-black/40 p-2 text-white/70 hover:text-white"
+          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-black/50 text-white/60 transition hover:bg-black hover:text-white"
         >
           →
         </button>
+
+        <Link to="/search" className="search-pill ml-2 no-underline outline-none">
+          <NavIcon name="search" className="h-5 w-5 shrink-0 text-white/70" />
+          <span>What do you want to listen to?</span>
+        </Link>
       </div>
 
-      <div className="flex items-center gap-4">
+      <div className="flex shrink-0 items-center gap-3">
         {isAuthenticated && user ? (
           <>
-            <span className="text-sm text-white/70">{user.display_name}</span>
+            {user.images[0]?.url ? (
+              <img
+                src={user.images[0].url}
+                alt=""
+                className="h-8 w-8 rounded-full object-cover ring-2 ring-white/10"
+              />
+            ) : null}
+            <span className="hidden text-sm font-medium text-white/80 sm:inline">
+              {user.display_name}
+            </span>
             <button
               type="button"
               onClick={logout}
-              className="rounded-full border border-white/20 px-4 py-1 text-sm hover:border-white/40"
+              className="btn-secondary px-4 py-1.5"
             >
               Log out
             </button>
@@ -39,13 +54,17 @@ export function TopBar() {
           <button
             type="button"
             onClick={() => void login()}
-            className="rounded-full bg-white px-4 py-1 text-sm font-medium text-black hover:scale-105"
+            className="rounded-full bg-white px-5 py-2 text-sm font-bold text-black transition hover:scale-105"
           >
             Log in
           </button>
         )}
-        <Link to="/settings" className="text-sm text-white/70 hover:text-white">
-          Settings
+        <Link
+          to="/settings"
+          className="flex h-9 w-9 items-center justify-center rounded-full text-white/60 transition hover:bg-white/10 hover:text-white"
+          aria-label="Settings"
+        >
+          ⚙
         </Link>
       </div>
     </header>

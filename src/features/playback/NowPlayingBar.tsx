@@ -17,36 +17,45 @@ export function NowPlayingBar() {
   const imageUrl = currentTrack?.album.images[0]?.url;
 
   return (
-    <footer className="fixed bottom-0 left-0 right-0 z-40 flex h-nowPlayingBar items-center gap-4 border-t border-white/10 bg-spotify-black px-4">
-      <div className="flex min-w-0 flex-1 items-center gap-3">
+    <footer className="glass-bar fixed bottom-0 left-0 right-0 z-40 flex h-nowPlayingBar items-center gap-4 border-t px-6">
+      <div className="flex min-w-0 flex-1 items-center gap-4">
         {currentTrack ? (
           <>
             {imageUrl ? (
-              <img src={imageUrl} alt="" className="h-14 w-14 rounded object-cover" />
+              <img
+                src={imageUrl}
+                alt=""
+                className="h-14 w-14 rounded-md object-cover shadow-card"
+              />
             ) : (
-              <div className="h-14 w-14 rounded bg-spotify-highlight" />
+              <div className="h-14 w-14 rounded-md bg-spotify-highlight" />
             )}
             <div className="min-w-0">
-              <p className="truncate text-sm font-medium text-white">
+              <p className="truncate text-sm font-semibold text-white">
                 {currentTrack.name}
               </p>
-              <p className="truncate text-xs text-white/60">
+              <p className="truncate text-xs text-white/55">
                 {currentTrack.artists.map((a) => a.name).join(", ")}
               </p>
             </div>
           </>
         ) : (
-          <p className="text-sm text-white/50">Nothing playing</p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-14 w-14 items-center justify-center rounded-md bg-white/5 text-white/30">
+              ♪
+            </div>
+            <p className="text-sm text-white/45">Pick something to play</p>
+          </div>
         )}
       </div>
 
-      <div className="flex max-w-xl flex-1 flex-col items-center gap-1">
-        <div className="flex items-center gap-4">
+      <div className="flex max-w-xl flex-1 flex-col items-center gap-2">
+        <div className="flex items-center gap-5">
           <button
             type="button"
             aria-label="Previous"
             onClick={() => void previous()}
-            className="text-white/70 hover:text-white"
+            className="text-xl text-white/50 transition hover:text-white"
           >
             ⏮
           </button>
@@ -54,7 +63,7 @@ export function NowPlayingBar() {
             type="button"
             aria-label={isPlaying ? "Pause" : "Play"}
             onClick={() => void togglePlay()}
-            className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black"
+            className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-base text-black shadow-md transition hover:scale-105"
           >
             {isPlaying ? "⏸" : "▶"}
           </button>
@@ -62,7 +71,7 @@ export function NowPlayingBar() {
             type="button"
             aria-label="Next"
             onClick={() => void next()}
-            className="text-white/70 hover:text-white"
+            className="text-xl text-white/50 transition hover:text-white"
           >
             ⏭
           </button>
